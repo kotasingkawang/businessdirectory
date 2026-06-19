@@ -37,6 +37,22 @@ export default function UsahaPage() {
   const [selectedKelurahan, setSelectedKelurahan] = useState("");
   const [sortBy, setSortBy] = useState("newest");
 
+  const ALL_CATEGORY = "__all_category__";
+  const ALL_KECAMATAN = "__all_kecamatan__";
+  const ALL_KELURAHAN = "__all_kelurahan__";
+
+  const handleKategoriChange = (value: string) =>
+    setSelectedKategori(value === ALL_CATEGORY ? "" : value);
+
+  const handleKecamatanChange = (value: string) => {
+    const val = value === ALL_KECAMATAN ? "" : value;
+    setSelectedKecamatan(val);
+    if (val === "") setSelectedKelurahan("");
+  };
+
+  const handleKelurahanChange = (value: string) =>
+    setSelectedKelurahan(value === ALL_KELURAHAN ? "" : value);
+
   const filteredBusinesses = useMemo(() => {
     let filtered = businesses.filter((b) => b.status === "approved");
 
@@ -78,12 +94,12 @@ export default function UsahaPage() {
     <div className="space-y-6">
       <div>
         <Label className="text-sm font-medium mb-2 block">Kategori</Label>
-        <Select value={selectedKategori} onValueChange={setSelectedKategori}>
+        <Select value={selectedKategori} onValueChange={handleKategoriChange}>
           <SelectTrigger>
             <SelectValue placeholder="Semua kategori" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Semua kategori</SelectItem>
+            <SelectItem value={ALL_CATEGORY}>Semua kategori</SelectItem>
             {categories.map((cat) => (
               <SelectItem key={cat.id} value={cat.id}>
                 {cat.nama_kategori}
@@ -95,18 +111,12 @@ export default function UsahaPage() {
 
       <div>
         <Label className="text-sm font-medium mb-2 block">Kecamatan</Label>
-        <Select
-          value={selectedKecamatan}
-          onValueChange={(value) => {
-            setSelectedKecamatan(value);
-            setSelectedKelurahan("");
-          }}
-        >
+        <Select value={selectedKecamatan} onValueChange={handleKecamatanChange}>
           <SelectTrigger>
             <SelectValue placeholder="Semua kecamatan" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Semua kecamatan</SelectItem>
+            <SelectItem value={ALL_KECAMATAN}>Semua kecamatan</SelectItem>
             {kecamatanList.map((kec) => (
               <SelectItem key={kec} value={kec}>
                 {kec}
@@ -119,12 +129,12 @@ export default function UsahaPage() {
       {selectedKecamatan && kelurahanList[selectedKecamatan] && (
         <div>
           <Label className="text-sm font-medium mb-2 block">Kelurahan</Label>
-          <Select value={selectedKelurahan} onValueChange={setSelectedKelurahan}>
+          <Select value={selectedKelurahan} onValueChange={handleKelurahanChange}>
             <SelectTrigger>
               <SelectValue placeholder="Semua kelurahan" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Semua kelurahan</SelectItem>
+              <SelectItem value={ALL_KELURAHAN}>Semua kelurahan</SelectItem>
               {kelurahanList[selectedKecamatan].map((kel) => (
                 <SelectItem key={kel} value={kel}>
                   {kel}

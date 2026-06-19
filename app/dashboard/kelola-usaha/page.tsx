@@ -49,6 +49,8 @@ export default function KelolaUsahaPage() {
     business: Usaha;
   } | null>(null);
 
+  const ALL_STATUS = "__all_status__";
+
   const filteredBusinesses = businesses.filter((b) => {
     const matchesSearch =
       b.nama_usaha.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -97,12 +99,15 @@ export default function KelolaUsahaPage() {
                 className="pl-10"
               />
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <Select
+              value={statusFilter}
+              onValueChange={(value) => setStatusFilter(value === ALL_STATUS ? "" : value)}
+            >
               <SelectTrigger className="w-40">
                 <SelectValue placeholder="Semua status" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Semua status</SelectItem>
+                <SelectItem value={ALL_STATUS}>Semua status</SelectItem>
                 <SelectItem value="pending">Menunggu</SelectItem>
                 <SelectItem value="approved">Disetujui</SelectItem>
                 <SelectItem value="rejected">Ditolak</SelectItem>
